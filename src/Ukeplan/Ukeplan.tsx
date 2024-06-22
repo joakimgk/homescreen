@@ -26,7 +26,7 @@ export const Ukeplan = () => {
 
     return (
         <Container>
-            <Link href='/ukeplan'>
+            <Link href='ukeplan'>
                 {planDay < 6 ? (
                     <img src={`../miniyr/cgi-bin/krohnengen5${planDay}-1.png?${Math.random()}`} />
                 ) : <h2>God helg</h2>}

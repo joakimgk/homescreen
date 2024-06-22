@@ -29,7 +29,6 @@ export const WeatherPage = () => (
       <Weather />
     </WeatherContainer>
     <UkeplanContainer>
-      {/* <PdfToImage pdfUrl="https://www.bergen.kommune.no/api/rest/filer/V38975589" pageNumber={1} sliceWidth={230} /> */}
       <Ukeplan />
     </UkeplanContainer>
     <MeldingerContainer>

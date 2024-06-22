@@ -2,7 +2,7 @@
   "name": "startskjerm",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
+  "homepage": "/startskjerm",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -23,6 +23,7 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.11",
+    "supabase": "^1.178.2",
     "swr": "^2.2.5",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
