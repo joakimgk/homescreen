@@ -1,25 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { SWRConfig } from 'swr';
 
-function App() {
+// Import polyfills
+import 'es6-promise/auto'; // for Promise
+import 'whatwg-fetch'; // for fetch
+import 'react-app-polyfill/ie9'; // For IE 9-11 support
+import 'react-app-polyfill/stable'; // For other modern features support
+import 'core-js/es/map'; // Polyfill Map
+import 'core-js/es/set'; // Polyfill Set
+import 'core-js/es/promise'; // Polyfill Promise
+
+import styled from 'styled-components';
+import { Longterm } from './Longterm/Longterm';
+import { WeatherPage } from './Pages/WeatherPage';
+import { UkeplanPage } from './Pages/UkeplanPage';
+import { Route, Router } from 'wouter';
+import { useEffect } from 'react';
+
+// Feature detection and fallback for fetch
+if (!window.fetch) {
+  // Polyfill fetch API
+  window.fetch = require('whatwg-fetch').fetch;
+}
+
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init);
+  return res.json();
+};
+
+const swrConfig = {
+  refreshInterval: 30000,
+  fetcher
+};
+
+const HeaderContainer = styled.div`
+  flex: 0 0 10%; /* Equivalent to 0.5fr out of 4.5fr total */
+  background: lightgrey; /* Adjust to your needs */
+`;
+
+const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const Content = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const basePath = process.env.REACT_APP_BASE_URL || '/';
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SWRConfig value={swrConfig}>
+      <Layout>
+        <HeaderContainer><Longterm /></HeaderContainer>
+        <Content>
+          <Router base={basePath}>
+            <Route path="/" component={WeatherPage} />
+            <Route path="/ukeplan" component={UkeplanPage} />
+          </Router>
+        </Content>
+      </Layout>
+    </SWRConfig>
   );
 }
 
