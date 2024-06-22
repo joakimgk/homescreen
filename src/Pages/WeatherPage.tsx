@@ -45,6 +45,7 @@ export const WeatherPage = () => (
         <li>Routing (wouter)</li>
         <li>Various polyfills</li>
         <li>env variables (basepath)</li>
+        <li>Supabase</li>
       </ul>
       {/* <ConsoleLogger /> */}
     </MeldingerContainer>
