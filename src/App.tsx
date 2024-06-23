@@ -15,7 +15,7 @@ import { Longterm } from './Longterm/Longterm';
 import { WeatherPage } from './Pages/WeatherPage';
 import { UkeplanPage } from './Pages/UkeplanPage';
 import { Route, Router } from 'wouter';
-import { useEffect } from 'react';
+import { Sensors } from './Sensors/Sensors';
 
 // Feature detection and fallback for fetch
 if (!window.fetch) {
@@ -60,7 +60,10 @@ const App = () => {
   return (
     <SWRConfig value={swrConfig}>
       <Layout>
-        <HeaderContainer><Longterm /></HeaderContainer>
+        <HeaderContainer>
+          <Longterm />
+          <Sensors />
+        </HeaderContainer>
         <Content>
           <Router base={basePath}>
             <Route path="/" component={WeatherPage} />

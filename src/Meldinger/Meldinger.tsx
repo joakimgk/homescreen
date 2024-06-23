@@ -1,0 +1,16 @@
+export const Meldinger = () => (
+    <ul>
+        <li>SWR</li>
+        <li>Axios</li>
+        <li>SWR fetcher og swrConfig (App.tsx)</li>
+        <li>client.ts</li>
+        <li>useWeather()</li>
+        <li>fetch polyfill</li>
+        <li>Styled components</li>
+        <li>Images</li>
+        <li>Static hosting</li>
+        <li>Routing (wouter)</li>
+        <li>Various polyfills</li>
+        <li>env variables (basepath)</li>
+    </ul>
+)

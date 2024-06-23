@@ -14,7 +14,7 @@ export const Weather = () => {
     return (
         <Container>
             {weather?.properties?.timeseries.map((w: any) => (
-                <WeatherEntry weather={w} />
+                <WeatherEntry key={new Date(w.time).valueOf()} weather={w} />
             ))}
         </Container>
     )
