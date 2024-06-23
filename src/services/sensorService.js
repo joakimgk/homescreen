@@ -6,8 +6,8 @@ var defaultFilter = 'project_id=eq.1';
 export function getjwtoken() {
 	return new Promise(function (resolve, reject) {
 		var params = {
-			"email": REACT_APP_SUPABASE_USERNAME,
-			"password": REACT_APP_SUPABASE_PASS
+			"email": process.env.REACT_APP_SUPABASE_USERNAME,
+			"password": process.env.REACT_APP_SUPABASE_PASS
 		};
 
 		var url = process.env.REACT_APP_SUPABASE_URL + '/auth/v1/token?grant_type=password';
