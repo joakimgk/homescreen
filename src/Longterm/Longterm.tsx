@@ -2,10 +2,11 @@ import styled from "styled-components";
 import { Timeserie } from "../services/longterm";
 import { useLongterm } from "../services/weatherService";
 import { LongtermEntry } from "./LongtermEntry";
-import dayjs from "dayjs";
 
 const Container = styled.div`
     display: flex;
+    width: 65%;
+    overflow: hidden;
 `;
 
 export const Longterm = () => {

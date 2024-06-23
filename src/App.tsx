@@ -38,7 +38,10 @@ const swrConfig = {
 };
 
 const HeaderContainer = styled.div`
+display: flex;
   flex: 0 0 10%; /* Equivalent to 0.5fr out of 4.5fr total */
+  flex-direction: row;
+  justify-content: space-between;
   background: lightgrey; /* Adjust to your needs */
 `;
 
