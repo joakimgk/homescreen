@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components"
-import { useEffect, useState } from "react";
-import { getData } from "../services/sensorService";
+import { useData } from "../services/sensorService";
 import { Client, Activity } from "../../types/supabaseTypes";
 import dayjs from "dayjs";
 
@@ -16,23 +15,10 @@ const Wrapper = styled.div<{ inactive: string, status: string }>`
 
 export const Sensor = ({ data }: { data: Client }) => {
 
-    const [lastActivity, setLastActivity] = useState<Activity[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { data: lastActivity } = useData<Activity[]>('v_event_last_activity', 'client_id=eq.' + data.id);
 
-    useEffect(() => {
-        getData('v_event_last_activity', 'client_id=eq.' + data.id)
-            .then(response => {
-                setLastActivity(JSON.parse(response));
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) {
-        return null;
-    }
-
-    const lockSensor = lastActivity.find(a => a.button_id === 'button1');
-    const doorSensor = lastActivity.find(a => a.button_id === 'button2');
+    const lockSensor = lastActivity?.find(a => a.button_id === 'button1');
+    const doorSensor = lastActivity?.find(a => a.button_id === 'button2');
 
     const isInactive = (time?: string | null) =>
         dayjs(time, 'YYYY-MM-DDTHH:MM:SS', 'no').isBefore(dayjs().add(-14, 'days'));
