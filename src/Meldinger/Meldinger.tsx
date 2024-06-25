@@ -17,5 +17,10 @@ export const Meldinger = () => (
                 <li>js functions</li>
             </ul>
         </li>
+        <li>Local data files
+            <ul>
+                <li>Kalender</li>
+            </ul>
+        </li>
     </ul>
 )

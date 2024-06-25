@@ -16,6 +16,7 @@ import { WeatherPage } from './Pages/WeatherPage';
 import { UkeplanPage } from './Pages/UkeplanPage';
 import { Route, Router } from 'wouter';
 import { Sensors } from './Sensors/Sensors';
+import { useHolidays } from './services/holidayService';
 
 // Feature detection and fallback for fetch
 if (!window.fetch) {
@@ -59,6 +60,8 @@ const Content = styled.div`
 const basePath = process.env.REACT_APP_BASE_URL || '/';
 
 const App = () => {
+
+  const { data: holidays } = useHolidays();
 
   return (
     <SWRConfig value={swrConfig}>
