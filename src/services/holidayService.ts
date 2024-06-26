@@ -43,6 +43,13 @@ export const useHolidays = () => {
         const events = data.split('BEGIN:VEVENT\r\n');
         const cal: any[] = [];
 
+        // må lages separat
+        const sommerferie: Partial<CalendarEntry> = {
+            description: 'Sommerferie!',
+            dtstart: '2024-06-21',
+            dtend: '2024-08-18'
+        };
+
         events.forEach(event => {
             if (!event.trim()) return; // Skip empty entries
 
@@ -59,10 +66,33 @@ export const useHolidays = () => {
                 obj[key] = value[1];  //convert(value[1], field[1]);
             });
 
+            /*
+            if (obj.summary === 'Skolestart') {
+                const a = obj.dtstart as dayjs.Dayjs;
+                const b = sommerferie.dtend as dayjs.Dayjs;
+                if (!b || b.isAfter(a)) {
+                    sommerferie.dtend = a;
+                }
+            }
+            if (obj.summary === 'Skoleslutt') {
+                const a = obj.dtstart as dayjs.Dayjs;
+                const b = sommerferie.dtstart as dayjs.Dayjs;
+                if (!b || b.isAfter(a)) {
+                    sommerferie.dtstart = a;
+                }
+            }
+            */
+
             if (isCalendarEntry(obj)) {
                 cal.push(obj);
+            } else {
+                console.log('INVALID', obj);
             }
         });
+
+        if (sommerferie.dtstart && sommerferie.dtend) {
+            cal.push(sommerferie);
+        }
 
         return cal;
     };

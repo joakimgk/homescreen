@@ -3,23 +3,30 @@ import { ModifierKeyz, icons, modifiers } from "../services/icons";
 import styled from "styled-components";
 import { Timeserie } from "../services/longterm";
 import { useWeather } from "../services/weatherService";
+import { useHolidayContext } from "../contexts/HolidayContext";
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 0.2em 1em;
+    max-width: 12vw;
+    overflow: hidden;
+    padding: 0.2em 1.5em;
+    align-items: center;
     font-size: 1.7em;
 `;
 
 const Time = styled.div`
     display: flex;
     font-size: 0.5em;
+    color: darkblue;
+    white-space: nowrap;
 `;
 
 const Icon = styled.div`
     display: flex;
     position: relative;
     top: -0.3em;
+
     img {
         height: 1.6em;
     }
@@ -29,10 +36,13 @@ const Temperature = styled.div`
     display: flex;
     position: relative;
     top: -0.7em;
+    font-size: 0.6em;
+    font-weight: 600;
 `;
 
 export const LongtermEntry = ({ longterm }: { longterm: Timeserie }) => {
     const { data: weather } = useWeather();
+    const { isHoliday } = useHolidayContext();
 
     const summary = longterm.data.next_24_hours;
     if (!summary) return null;
@@ -54,12 +64,18 @@ export const LongtermEntry = ({ longterm }: { longterm: Timeserie }) => {
         if (key.length > 1) icon += modifiers[k];
     }
 
+    const date = dayjs(longterm.time, 'YYYY-MM-DD', 'no');
 
     return (
         <Container>
-            <Time>{dayjs(longterm.time, 'YYYY-MM-DD', 'no').format('dddd D/M')}</Time>
-            <Icon><img src={`img/100/${icon}.png`} /></Icon>
-            <Temperature>{Math.round(summary.details.air_temperature_max)}&nbsp;&deg;</Temperature>
+            <Time>{date.format('ddd D/M')}</Time>
+            <Icon>
+                <img src={`img/100/${icon}.png`} />
+                {isHoliday && isHoliday(date) && (
+                    <img src={`img/flagg.png`} />
+                )}
+            </Icon>
+            <Temperature>{Math.round(summary.details.air_temperature_max)}&deg;</Temperature>
         </Container>
     );
 }

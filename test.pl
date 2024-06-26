@@ -32,4 +32,4 @@ die "Failed to execute $scp_command: $?" if $? != 0;
 print "Restore package.json for local server\n";
 system("cp package_local.json package.json");
 
-print "DONE\n";
+print "\nDONE\n";
