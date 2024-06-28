@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { ModifierKeyz, icons, modifiers } from "../services/icons";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Timeserie, Next1_HoursDetails } from "../services/weather";
 import { pad, padD } from "../utils/helpers";
 import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
@@ -13,12 +13,9 @@ const Container = styled.div`
     font-size: 1em;
 `;
 
-const Time = styled.div<{ currentTime?: number }>`
+const Time = styled.div`
     display: flex;
-    ${props => props.currentTime === 1 && css`
-        font-weight: 600;
-    `}
-    align-items: center;
+    align-items: flex-start;
     flex: 1;
 `;
 

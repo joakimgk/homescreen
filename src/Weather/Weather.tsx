@@ -18,8 +18,8 @@ const Wrapper = styled.div`
 
 const DateHeader = styled.div`
     display: flex;
-    font-size: 1.2em;
-    font-weight: 700;
+    font-size: 1em;
+    font-weight: 600;
     padding: 0.5em 0 0.5em 0.7em;
 `;
 
@@ -28,7 +28,7 @@ const Icon = styled.div`
     padding-left: 0.5em;
     
     img {
-        height: 1.6em;
+        height: 1.3em;
     }
 `;
 

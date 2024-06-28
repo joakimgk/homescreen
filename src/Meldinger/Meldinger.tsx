@@ -30,5 +30,6 @@ export const Meldinger = () => (
                 <li>Trends</li>
             </ul>
         </li>
+        <li>Clock</li>
     </ul>
 )
