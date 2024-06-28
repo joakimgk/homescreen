@@ -11,6 +11,13 @@ const Container = styled.div`
     flex-direction: column;
 `;
 
+const Header = styled.div`
+    display: flex;
+    font-size: 1.3em;
+    font-weight: 600;
+    padding: 0.2em 0 0 0.5em;
+`;
+
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -32,9 +39,9 @@ const Icon = styled.div`
     }
 `;
 
-export const Weather = () => {
+export const Weather = ({ location, header, isPrimary = false }: { location: string, header: string, isPrimary?: boolean }) => {
 
-    const { data: weather } = useWeather();
+    const { data: weather } = useWeather(location);
     const { isHoliday } = useHolidayContext();
     const { registerSeries, series } = usePrecipitationTrendContext();
 
@@ -49,6 +56,8 @@ export const Weather = () => {
 
     return (
         <Container>
+            <Header>{header}</Header>
+
             {weather?.properties?.timeseries.map(w => {
                 const date = dayjs(w.time, 'YYYY-MM-DD', 'no');
 
@@ -56,7 +65,7 @@ export const Weather = () => {
                     {date.hour() < prev && (
                         <DateHeader>
                             {date.format('dddd DD. MMMM')}
-                            {isHoliday && isHoliday(date) && (
+                            {isPrimary && isHoliday && isHoliday(date) && (
                                 <Icon>
                                     <img src={`img/flagg.png`} />
                                 </Icon>

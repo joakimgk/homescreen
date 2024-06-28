@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Timeserie } from "../services/longterm";
 import { useWeather } from "../services/weatherService";
 import { useHolidayContext } from "../contexts/HolidayContext";
+import { BERGEN } from "../Weather/locations";
 
 const Container = styled.div`
     display: flex;
@@ -37,7 +38,7 @@ const Temperature = styled.div`
 `;
 
 export const LongtermEntry = ({ longterm }: { longterm: Timeserie }) => {
-    const { data: weather } = useWeather();
+    const { data: weather } = useWeather(BERGEN);
     const { isHoliday } = useHolidayContext();
 
     const summary = longterm.data.next_24_hours;

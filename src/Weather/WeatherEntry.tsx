@@ -25,7 +25,7 @@ const Icon = styled.div`
     flex: 1;
 
     img {
-        height: 1.6em;
+        height: 1.7em;
     }
 `;
 

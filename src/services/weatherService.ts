@@ -2,9 +2,9 @@ import useSWR from "swr";
 import { Weather } from "./weather";
 import { Longterm } from "./longterm";
 
-export const useWeather = () => {
+export const useWeather = (location: string) => {
 
-    const url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.39323&lon=5.3245&altitude=5';
+    const url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?' + location;
 
     const { data } = useSWR<Weather>(url);
 
