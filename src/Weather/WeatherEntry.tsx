@@ -1,20 +1,23 @@
 import dayjs from "dayjs";
 import { ModifierKeyz, icons, modifiers } from "../services/icons";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Timeserie, Next1_HoursDetails } from "../services/weather";
 import { pad, padD } from "../utils/helpers";
 import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
+import { Clock } from "./Clock";
 
 const Container = styled.div`
     display: flex;
     justify-content: space-between; 
     padding: 0.2em 1em;
-    font-size: 1.3em;
+    font-size: 1em;
 `;
 
-const Time = styled.div`
+const Time = styled.div<{ currentTime?: number }>`
     display: flex;
-    font-weight: 600;
+    ${props => props.currentTime === 1 && css`
+        font-weight: 600;
+    `}
     align-items: center;
     flex: 1;
 `;
@@ -84,10 +87,7 @@ export const WeatherEntry = ({ weather }: { weather: Timeserie }) => {
     return (
         <Container>
             <Time>
-                {date.format('HH')}
-                {showMinutes && (
-                    <span>{`:${dayjs().format('mm')}`}</span>
-                )}
+                {showMinutes ? <Clock /> : <>{date.format('HH')}</>}
             </Time>
             <Icon>
                 <img src={`img/100/${icon}.png`} />
