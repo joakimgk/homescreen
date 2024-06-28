@@ -22,5 +22,13 @@ export const Meldinger = () => (
                 <li>Kalender</li>
             </ul>
         </li>
+        <li>Mobile Web App</li>
+        <li>Precipitation
+            <ul>
+                <li>Context and dictionary</li>
+                <li>Lookup</li>
+                <li>Trends</li>
+            </ul>
+        </li>
     </ul>
 )

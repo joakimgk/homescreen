@@ -15,10 +15,15 @@ const Container = styled.div`
 const Time = styled.div`
     display: flex;
     font-weight: 600;
+    align-items: center;
+    flex: 1;
 `;
 
 const Icon = styled.div`
     display: flex;
+    align-items: center;
+    flex: 1;
+
     img {
         height: 1.6em;
     }
@@ -26,10 +31,18 @@ const Icon = styled.div`
 
 const Temperature = styled.div`
     display: flex;
+    font-size: 0.8em;
+    align-items: center;
+    flex: 1;
 `;
 
 const Wind = styled.div`
     display: flex;
+    font-size: 0.6em;
+    align-items: center;
+    flex: 1;
+`;
+
 const Precipitation = styled.div`
     display: flex;
     align-items: center;

@@ -20,7 +20,7 @@ const DateHeader = styled.div`
     display: flex;
     font-size: 1.2em;
     font-weight: 700;
-    padding: 0.5em 0 0 0.5em;
+    padding: 0.5em 0 0.5em 0.7em;
 `;
 
 const Icon = styled.div`

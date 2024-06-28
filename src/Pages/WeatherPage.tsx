@@ -11,12 +11,12 @@ const Content = styled.div`
 `;
 
 const WeatherContainer = styled.div`
-  flex: 3;
+  flex: 2.5;
   background: lightblue; /* Adjust to your needs */
 `;
 
 const UkeplanContainer = styled.div`
-  flex: 1;
+  flex: 1.1;
   background: lightgreen; /* Adjust to your needs */
 `;
 

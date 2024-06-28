@@ -24,8 +24,6 @@ const Time = styled.div`
 
 const Icon = styled.div`
     display: flex;
-    position: relative;
-    top: -0.3em;
 
     img {
         height: 1.6em;
@@ -35,9 +33,7 @@ const Icon = styled.div`
 const Temperature = styled.div`
     display: flex;
     position: relative;
-    top: -0.7em;
-    font-size: 0.6em;
-    font-weight: 600;
+    font-size: 0.5em;
 `;
 
 export const LongtermEntry = ({ longterm }: { longterm: Timeserie }) => {
