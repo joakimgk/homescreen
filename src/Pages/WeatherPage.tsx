@@ -3,6 +3,7 @@ import ConsoleLogger from "../utils/ConsoleLogger";
 import { Weather } from "../Weather/Weather";
 import { Ukeplan } from "../Ukeplan/Ukeplan";
 import { Meldinger } from "../Meldinger/Meldinger";
+import { PrecipitationTrendProvider } from "../contexts/PrecipitationTrendContext";
 
 const Content = styled.div`
   display: flex;
@@ -26,9 +27,11 @@ const MeldingerContainer = styled.div`
 
 export const WeatherPage = () => (
   <Content>
-    <WeatherContainer>
-      <Weather />
-    </WeatherContainer>
+    <PrecipitationTrendProvider>
+      <WeatherContainer>
+        <Weather />
+      </WeatherContainer>
+    </PrecipitationTrendProvider>
     <UkeplanContainer>
       <Ukeplan />
     </UkeplanContainer>

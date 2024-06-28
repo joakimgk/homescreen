@@ -3,6 +3,8 @@ import { useWeather } from "../services/weatherService";
 import { WeatherEntry } from "./WeatherEntry";
 import dayjs from "dayjs";
 import { useHolidayContext } from "../contexts/HolidayContext";
+import { useEffect } from "react";
+import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
 
 const Container = styled.div`
     display: flex;
@@ -34,6 +36,13 @@ export const Weather = () => {
 
     const { data: weather } = useWeather();
     const { isHoliday } = useHolidayContext();
+    const { registerSeries, series } = usePrecipitationTrendContext();
+
+    useEffect(() => {
+        if (weather?.properties.timeseries && registerSeries) {
+            registerSeries(weather.properties.timeseries);
+        }
+    }, [weather, registerSeries]);
 
     let prev = 25; // init
     const now = dayjs();
