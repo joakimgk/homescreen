@@ -88,7 +88,7 @@ export const useHolidays = () => {
             if (isCalendarEntry(obj)) {
                 cal.push(obj);
             } else {
-                console.log('INVALID', obj);
+                //console.log('INVALID', obj);
             }
         });
 

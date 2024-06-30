@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import ConsoleLogger from "../utils/ConsoleLogger";
 import { Weather } from "../Weather/Weather";
 import { Ukeplan } from "../Ukeplan/Ukeplan";
 import { Meldinger } from "../Meldinger/Meldinger";
@@ -9,26 +8,24 @@ import { BERGEN, SANLORENZO } from "../Weather/locations";
 const Content = styled.div`
   display: flex;
   width: 100%;
+  overflow-y: scroll;
+  height: 90vh;
+  background: lightblue;
 `;
 
-const WeatherContainer = styled.div<{ secondary?: number }>`
+const WeatherContainer = styled.div`
   flex: 2.5;
-  background: lightblue; /* Adjust to your needs */
-
-  ${props => props.secondary && css`
-    border-left: 1px solid #E4E4E4;
-    padding-left: 1em;
-  `}
+  background: lightblue;
 `;
 
 const UkeplanContainer = styled.div`
   flex: 1.1;
-  background: lightgreen; /* Adjust to your needs */
+  background: lightgreen;
 `;
 
 const MeldingerContainer = styled.div`
   flex: 2;
-  background: lightcoral; /* Adjust to your needs */
+  background: lightcoral;
 `;
 
 export const WeatherPage = () => {
@@ -43,9 +40,11 @@ export const WeatherPage = () => {
         </WeatherContainer>
       </PrecipitationTrendProvider>
       {summer ? (
-        <WeatherContainer secondary={1}>
-          <Weather header="San Lorenzo al Mare" location={SANLORENZO} />
-        </WeatherContainer>
+        <PrecipitationTrendProvider>
+          <WeatherContainer>
+            <Weather header="San Lorenzo al Mare" location={SANLORENZO} />
+          </WeatherContainer>
+        </PrecipitationTrendProvider>
       ) : (
         <>
           <UkeplanContainer>

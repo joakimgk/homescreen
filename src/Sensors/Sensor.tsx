@@ -13,6 +13,8 @@ const Wrapper = styled.div<{ inactive: string, status: string }>`
     background-color: ${props => props.status};
 `;
 
+// alarm om dør er åpen og det er regn!
+// åpen mellom 22-09, eller i arbeidstid
 export const Sensor = ({ data }: { data: Client }) => {
 
     const { data: lastActivity } = useData<Activity[]>('v_event_last_activity', 'client_id=eq.' + data.id);
@@ -43,7 +45,7 @@ export const Sensor = ({ data }: { data: Client }) => {
 
     return (
         <Wrapper inactive={inactive.toString()} status={getStatus()}>
-            {data.name}
+            {/* {data.name} */}
         </Wrapper >
     )
 }
