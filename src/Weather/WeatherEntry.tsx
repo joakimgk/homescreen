@@ -9,13 +9,20 @@ import { Clock } from "./Clock";
 const Container = styled.div`
     display: flex;
     justify-content: space-between; 
-    padding: 0.2em 1em;
-    font-size: 1em;
+    padding: 3px 1em;
+    font-size: 16px;
+
+    /* define base font size */
+    font-size: 1.6em;
+    @media only screen and (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        font-size: 1.3em;
+    }
 `;
 
 const Time = styled.div`
     display: flex;
     align-items: flex-start;
+    font-size: 70%;
     flex: 1;
 `;
 
@@ -25,20 +32,23 @@ const Icon = styled.div`
     flex: 1;
 
     img {
-        height: 1.7em;
+        height: 1.3em;
+        @media only screen and (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+            height: 1.5em;
+        }
     }
 `;
 
 const Temperature = styled.div`
     display: flex;
-    font-size: 0.8em;
+    font-size: 70%;
     align-items: center;
     flex: 1;
 `;
 
 const Wind = styled.div`
     display: flex;
-    font-size: 0.6em;
+    font-size: 50%;
     align-items: center;
     flex: 1;
 `;
@@ -46,13 +56,13 @@ const Wind = styled.div`
 const Precipitation = styled.div`
     display: flex;
     align-items: center;
-    font-size: 0.6em;
+    font-size: 50%;
     flex: 1.6;
 `;
 
 const History = styled.div`
     display: inline;
-    font-size: 0.6em;
+    font-size: 50%;
     padding: 0 1em;
 `;
 

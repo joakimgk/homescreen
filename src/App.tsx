@@ -10,13 +10,14 @@ import 'core-js/es/map'; // Polyfill Map
 import 'core-js/es/set'; // Polyfill Set
 import 'core-js/es/promise'; // Polyfill Promise
 
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { Longterm } from './Longterm/Longterm';
 import { WeatherPage } from './Pages/WeatherPage';
 import { UkeplanPage } from './Pages/UkeplanPage';
 import { Route, Router } from 'wouter';
 import { Sensors } from './Sensors/Sensors';
 import { HolidayProvider } from './contexts/HolidayContext';
+import { theme } from './theme';
 
 // Feature detection and fallback for fetch
 if (!window.fetch) {
@@ -62,20 +63,22 @@ const basePath = process.env.REACT_APP_BASE_URL || '/';
 const App = () => {
   return (
     <SWRConfig value={swrConfig}>
-      <Layout>
-        <HolidayProvider>
-          <HeaderContainer>
-            <Longterm />
-            <Sensors />
-          </HeaderContainer>
-          <Content>
-            <Router base={basePath}>
-              <Route path="/" component={WeatherPage} />
-              <Route path="/ukeplan" component={UkeplanPage} />
-            </Router>
-          </Content>
-        </HolidayProvider>
-      </Layout>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <HolidayProvider>
+            <HeaderContainer>
+              <Longterm />
+              <Sensors />
+            </HeaderContainer>
+            <Content>
+              <Router base={basePath}>
+                <Route path="/" component={WeatherPage} />
+                <Route path="/ukeplan" component={UkeplanPage} />
+              </Router>
+            </Content>
+          </HolidayProvider>
+        </Layout>
+      </ThemeProvider>
     </SWRConfig >
   );
 }
