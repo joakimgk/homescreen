@@ -39,7 +39,7 @@ const fetcher = async (
  The comma after <T> ensures TypeScript correctly interprets the function signature 
  when used with multiple generic parameters.
  */
-export const fetcher2 = async (
+export const authFetcher = async (
   input: RequestInfo,
   init: RequestInit,
   credentials: BasicCredentials | undefined,
