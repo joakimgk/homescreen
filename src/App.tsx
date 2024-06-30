@@ -34,6 +34,8 @@ const fetcher = async (
   return res.json();
 };
 
+export const textFetcher = (url: string) => fetch(url).then(res => res.text());
+
 const swrConfig = {
   refreshInterval: 30000,
   fetcher

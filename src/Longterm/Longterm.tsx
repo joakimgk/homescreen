@@ -6,6 +6,7 @@ import { LongtermEntry } from "./LongtermEntry";
 const Container = styled.div`
     display: flex;
     width: 65%;
+    justify-content: space-between;
     overflow: hidden;
 `;
 

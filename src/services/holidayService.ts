@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import useSWR from "swr";
-
-const textFetcher = (url: string) => fetch(url).then(res => res.text());
+import { textFetcher } from "../App";
 
 export interface CalendarEntry {
     dtstamp: string;
@@ -24,9 +23,9 @@ const isCalendarEntry = (obj: any): obj is CalendarEntry => {
 
 export const useHolidays = () => {
 
-    const url = process.env.REACT_APP_CALENDAR_URL;
+    const url: string = process.env.REACT_APP_CALENDAR_URL || '';
 
-    const { data } = useSWR(url, textFetcher);
+    const { data, error } = useSWR<string>(url, (url: string) => textFetcher(url));
 
     const convert = (val: string, type?: string) => {
         const key = type?.split('=')[0];
@@ -41,13 +40,15 @@ export const useHolidays = () => {
     const parseICal = (data?: string): CalendarEntry[] => {
         if (!data) return [];
         const events = data.split('BEGIN:VEVENT\r\n');
-        const cal: any[] = [];
+        const cal: CalendarEntry[] = [];
 
         // må lages separat
-        const sommerferie: Partial<CalendarEntry> = {
+        const sommerferie: CalendarEntry = {
             description: 'Sommerferie!',
             dtstart: '2024-06-21',
-            dtend: '2024-08-18'
+            dtend: '2024-08-18',
+            uid: '0',
+            dtstamp: '0'
         };
 
         events.forEach(event => {
@@ -98,6 +99,7 @@ export const useHolidays = () => {
     };
 
     return {
-        data: parseICal(data)
+        data: parseICal(data),
+        error
     };
 };
