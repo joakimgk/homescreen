@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import useSWR from "swr";
 import { textFetcher } from "../App";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export interface CalendarEntry {
     dtstamp: string;
@@ -24,8 +25,8 @@ const isCalendarEntry = (obj: any): obj is CalendarEntry => {
 export const useHolidays = () => {
 
     const url: string = process.env.REACT_APP_CALENDAR_URL || '';
-
-    const { data, error } = useSWR<string>(url, (url: string) => textFetcher(url));
+    const { credentials } = useAuthContext();
+    const { data, error } = useSWR<string>(credentials ? [url, credentials] : null, () => textFetcher(url, {}, credentials));
 
     const convert = (val: string, type?: string) => {
         const key = type?.split('=')[0];

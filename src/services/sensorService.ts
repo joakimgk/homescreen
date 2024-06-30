@@ -1,15 +1,16 @@
 import useSWR from "swr";
+import { BasicCredentials, useAuthContext } from "../contexts/AuthContext";
 
 var supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 var supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 var jwtoken: string | null = null;
 var defaultFilter = 'project_id=eq.1';
 
-function getjwtoken(): Promise<string> {
+function getjwtoken(credentials?: BasicCredentials): Promise<string> {
 	return new Promise(function (resolve, reject) {
 		var params = {
-			"email": process.env.REACT_APP_SUPABASE_USERNAME,
-			"password": process.env.REACT_APP_SUPABASE_PASS
+			"email": credentials?.username || '',
+			"password": credentials?.password || ''
 		};
 
 		var url = process.env.REACT_APP_SUPABASE_URL + '/auth/v1/token?grant_type=password';
@@ -38,14 +39,18 @@ function getjwtoken(): Promise<string> {
 	});
 }
 
-function getData<T>(table: string, query?: string): Promise<T> {
+function getData<T>(table: string | undefined, credentials?: BasicCredentials, query?: string): Promise<T> {
+	if (!table) {
+		return Promise.resolve(null as unknown as T);
+	}
+
 	return new Promise(function (resolve, reject) {
 		var q = query == null ? '' : query + '&';
 		var url = supabaseUrl + '/rest/v1/' + table + '?' + q + defaultFilter + '&select=*';
 
 		// Check if jwtoken exists or fetch a new one
 		if (!jwtoken) {
-			getjwtoken().then(function (token: string) {
+			getjwtoken(credentials).then(function (token: string) {
 				makeApiRequest(token);
 			}).catch(function (error) {
 				reject(error);
@@ -83,7 +88,8 @@ function getData<T>(table: string, query?: string): Promise<T> {
 	});
 }
 
-export const useData = <T>(table: string, query?: string) => {
-	const fetcher = () => getData<T>(table, query);
-	return useSWR<T>(table + '?' + query, fetcher);
+export const useData = <T>(table: string | undefined, query?: string) => {
+	const { credentials } = useAuthContext();
+	const fetcher = () => getData<T>(table, credentials, query);
+	return useSWR<T>(!table ? null : table + '?' + query, fetcher);
 };

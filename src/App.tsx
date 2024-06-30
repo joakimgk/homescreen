@@ -18,6 +18,7 @@ import { Route, Router } from 'wouter';
 import { Sensors } from './Sensors/Sensors';
 import { HolidayProvider } from './contexts/HolidayContext';
 import { theme } from './theme';
+import { AuthProvider, BasicCredentials } from './contexts/AuthContext';
 
 // Feature detection and fallback for fetch
 if (!window.fetch) {
@@ -34,7 +35,41 @@ const fetcher = async (
   return res.json();
 };
 
-export const textFetcher = (url: string) => fetch(url).then(res => res.text());
+/*
+ The comma after <T> ensures TypeScript correctly interprets the function signature 
+ when used with multiple generic parameters.
+ */
+export const fetcher2 = async (
+  input: RequestInfo,
+  init: RequestInit,
+  credentials: BasicCredentials | undefined,
+  ...args: any[]
+) => {
+  const headers = new Headers(init.headers || {});
+  headers.set(
+    'Authorization',
+    'Basic ' + btoa(`${credentials?.username}:${credentials?.password}`)
+  );
+  const res = await fetch(input, { ...init, headers });
+  return res.json();
+};
+
+export const textFetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  credentials: BasicCredentials | undefined,
+  ...args: any[]): Promise<string> => {
+  const headers = new Headers();
+  headers.set(
+    'Authorization',
+    'Basic ' + btoa(`${credentials?.username}:${credentials?.password}`)
+  );
+  const response = await fetch(input, { ...init, headers });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data from ${input}`);
+  }
+  return response.text();
+}
 
 const swrConfig = {
   refreshInterval: 30000,
@@ -65,22 +100,24 @@ const basePath = process.env.REACT_APP_BASE_URL || '/';
 const App = () => {
   return (
     <SWRConfig value={swrConfig}>
-      <ThemeProvider theme={theme}>
-        <Layout>
-          <HolidayProvider>
-            <HeaderContainer>
-              <Longterm />
-              <Sensors />
-            </HeaderContainer>
-            <Content>
-              <Router base={basePath}>
-                <Route path="/" component={WeatherPage} />
-                <Route path="/ukeplan" component={UkeplanPage} />
-              </Router>
-            </Content>
-          </HolidayProvider>
-        </Layout>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <Layout>
+            <HolidayProvider>
+              <HeaderContainer>
+                <Longterm />
+                <Sensors />
+              </HeaderContainer>
+              <Content>
+                <Router base={basePath}>
+                  <Route path="/" component={WeatherPage} />
+                  <Route path="/ukeplan" component={UkeplanPage} />
+                </Router>
+              </Content>
+            </HolidayProvider>
+          </Layout>
+        </ThemeProvider>
+      </AuthProvider>
     </SWRConfig >
   );
 }
