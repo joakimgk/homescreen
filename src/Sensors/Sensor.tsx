@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 import { useData } from "../services/sensorService";
 import { Client, Activity } from "../../types/supabaseTypes";
 import dayjs from "dayjs";
+import { Link } from "wouter";
 
 const Wrapper = styled.div<{ inactive: string, status: string }>`
     display: flex;
@@ -43,9 +44,15 @@ export const Sensor = ({ data }: { data: Client }) => {
         return null;
     }
 
+    const link = `/sensor/${data.id}`;
+
     return (
-        <Wrapper inactive={inactive.toString()} status={getStatus()}>
-            {/* {data.name} */}
-        </Wrapper >
+        <>
+            <Link href={link}>
+                <Wrapper inactive={inactive.toString()} status={getStatus()}>
+                    {/* {data.name} */}
+                </Wrapper >
+            </Link>
+        </>
     )
 }

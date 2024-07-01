@@ -20,6 +20,7 @@ export const Meldinger = () => (
         <li>Local data files
             <ul>
                 <li>Kalender</li>
+                <li>Bursdager</li>
             </ul>
         </li>
         <li>Mobile Web App</li>
@@ -31,5 +32,7 @@ export const Meldinger = () => (
             </ul>
         </li>
         <li>Clock</li>
+        <li>Basic Auth</li>
+        <li>Chart.js</li>
     </ul>
 )
