@@ -1,22 +1,23 @@
 import styled from "styled-components";
-import { useData } from "../services/sensorService";
-import { useParams } from "wouter";
+import { Link, useParams } from "wouter";
+import { SensorChart } from "../Sensors/SensorChart";
 
 const Content = styled.div`
   display: flex;
-  background-color: red;
+  height: 80vh;
 `;
 
 
 export const SensorPage = () => {
     const params = useParams();
-    const { data: activity } = useData<Event[]>('event', 'client_id=eq.' + params.clientid + '&order=created_at.desc');
+    const clientId = params.clientid;
 
-    console.log(params, activity);
+    if (!clientId) return null;
 
     return (
         <Content>
-            <h1>Sensor</h1>
+            <Link href="/">Back</Link>
+            <SensorChart clientId={clientId} />
         </Content>
     );
 };
