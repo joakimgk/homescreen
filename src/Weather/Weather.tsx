@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { useEffect } from "react";
 import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
 import { Icons } from "../Shared/Icons";
+import { Location } from "./locations";
 
 const Container = styled.div<{ primary?: number }>`
     display: flex;
@@ -47,22 +48,23 @@ const Icon = styled.div`
     }
 `;
 
-export const Weather = ({ location, header, isPrimary = false }: { location: string, header: string, isPrimary?: boolean }) => {
+export const Weather = ({ location, isPrimary = false }: { location: Location, isPrimary?: boolean }) => {
 
-    const { data: weather } = useWeather(location);
+    const { data: weather } = useWeather(location.loc);
     const { registerSeries } = usePrecipitationTrendContext();
 
     useEffect(() => {
         if (weather?.properties.timeseries && registerSeries) {
-            registerSeries(weather.properties.timeseries);
+            registerSeries(location.key, weather.properties.timeseries);
         }
     }, [weather, registerSeries]);
+
 
 
     let prev = 25; // init
     return (
         <Container primary={isPrimary ? 1 : 0}>
-            <Header>{header}</Header>
+            <Header>{location.name}</Header>
 
             {weather?.properties?.timeseries.map(w => {
                 const date = dayjs(w.time, 'YYYY-MM-DD', 'no');

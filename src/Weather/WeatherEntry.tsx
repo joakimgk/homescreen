@@ -5,6 +5,7 @@ import { Timeserie, Next1_HoursDetails } from "../services/weather";
 import { pad, padD } from "../utils/helpers";
 import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
 import { Clock } from "./Clock";
+import { Location } from "./locations";
 
 const Container = styled.div`
     display: flex;
@@ -62,7 +63,7 @@ const Precipitation = styled.div`
 
 const History = styled.div`
     display: inline;
-    font-size: 50%;
+    font-size: 70%;
     padding: 0 1em;
 `;
 
@@ -73,9 +74,9 @@ const RainIndicator = styled.div<{ precipitation_amount?: number }>`
     height: 12px;
 `;
 
-export const WeatherEntry = ({ weather }: { weather: Timeserie }) => {
+export const WeatherEntry = ({ location, weather }: { location: Location, weather: Timeserie }) => {
     const forecast = weather.data.next_1_hours || weather.data.next_6_hours || weather.data.next_12_hours;
-    const { getTrend } = usePrecipitationTrendContext();
+    const { getTrend, getSeries } = usePrecipitationTrendContext();
 
     if (!forecast) return null;
 
@@ -89,7 +90,8 @@ export const WeatherEntry = ({ weather }: { weather: Timeserie }) => {
 
     const rainMM = (forecast.details as Next1_HoursDetails).precipitation_amount;
 
-    const trend = getTrend(date);
+    const trend = getTrend(location.key, date);
+    const series = getSeries(location.key, date);
 
     return (
         <Container>
@@ -103,7 +105,7 @@ export const WeatherEntry = ({ weather }: { weather: Timeserie }) => {
             <Precipitation>
                 {!!rainMM && rainMM > 0 && (
                     <>{`${padD(rainMM)} mm`}
-                        <History>t: {trend}</History>
+                        <History>t: {trend} (d: {series ? series.length : '-'})</History>
                         <RainIndicator precipitation_amount={rainMM} />
                     </>
                 )}

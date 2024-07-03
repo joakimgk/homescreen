@@ -34,17 +34,13 @@ export const WeatherPage = () => {
 
   return (
     <Content>
-      <PrecipitationTrendProvider>
-        <WeatherContainer>
-          <Weather isPrimary header="Bergen" location={BERGEN} />
-        </WeatherContainer>
-      </PrecipitationTrendProvider>
+      <WeatherContainer>
+        <Weather isPrimary location={BERGEN} />
+      </WeatherContainer>
       {summer ? (
-        <PrecipitationTrendProvider>
-          <WeatherContainer>
-            <Weather header="San Lorenzo al Mare" location={SANLORENZO} />
-          </WeatherContainer>
-        </PrecipitationTrendProvider>
+        <WeatherContainer>
+          <Weather location={SANLORENZO} />
+        </WeatherContainer>
       ) : (
         <>
           <UkeplanContainer>

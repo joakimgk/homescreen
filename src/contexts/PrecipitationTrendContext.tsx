@@ -11,23 +11,25 @@ interface Trend {
 }
 
 interface PrecipitationSeries {
-    [key: string]: Trend; //number[];
+    [key: string]: Trend;
+}
+
+interface PrecipitationData {
+    [location: string]: PrecipitationSeries; // supports multiple locations (key is location)
 }
 
 interface PrecipitationTrendProviderProps {
-    registerSeries: (data?: Timeserie[]) => void;
-    getSeries: (d: dayjs.Dayjs) => number[];
-    getValue: (d: dayjs.Dayjs) => number;
-    getTrend: (d: dayjs.Dayjs) => number;
-    series: PrecipitationSeries;
+    registerSeries: (location: string, data?: Timeserie[]) => void;
+    getSeries: (location: string, d: dayjs.Dayjs) => number[];
+    getValue: (location: string, d: dayjs.Dayjs) => number | undefined;
+    getTrend: (location: string, d: dayjs.Dayjs) => number | undefined;
 }
 
 const PrecipitationTrendContext = React.createContext<PrecipitationTrendProviderProps>({
     registerSeries: () => { },  // no-op function
     getSeries: () => [],
     getValue: () => 0,
-    getTrend: () => 0,
-    series: {}
+    getTrend: () => 0
 });
 
 function isNextHours(forecast: Next12_Hours | NextHours | undefined): forecast is NextHours {
@@ -37,9 +39,12 @@ function isNextHours(forecast: Next12_Hours | NextHours | undefined): forecast i
 // no props here -- just `children`
 export const PrecipitationTrendProvider = ({ children }: PropsWithChildren<{}>) => {
 
-    const series: PrecipitationSeries = {};
+    const data: PrecipitationData = {};
 
-    const cleanOldData = () => {
+    const cleanOldData = (location: string) => {
+        const series = data[location];
+        if (!series) return;
+
         const currentDate = dayjs();
 
         // Extract the keys and sort them
@@ -56,7 +61,9 @@ export const PrecipitationTrendProvider = ({ children }: PropsWithChildren<{}>) 
         }
     }
 
-    const computeTrends = () => {
+    const computeTrends = (location: string) => {
+        const series = data[location];
+        if (!series) return;
 
         const keys = Object.keys(series);
         const high = 0.975;
@@ -96,26 +103,32 @@ export const PrecipitationTrendProvider = ({ children }: PropsWithChildren<{}>) 
     const dateToKey = (d: dayjs.Dayjs): string =>
         `${d.year()}${pad(d.month() + 1)}${pad(d.date())}@${pad(d.hour())}`;
 
-
-    const getTrend = (d: dayjs.Dayjs): number => {
+    const getTrend = (location: string, d: dayjs.Dayjs): number | undefined => {
+        const series = data[location];
+        if (!series) return undefined;
         const key = dateToKey(d);
         return series[key]?.trend || 0;
     };
 
-    const getSeries = (d: dayjs.Dayjs): number[] => {
+    const getSeries = (location: string, d: dayjs.Dayjs): number[] => {
+        const series = data[location];
+        if (!series) return [];
         const key = dateToKey(d);
         return series[key].values;
     };
 
-    const getValue = (d: dayjs.Dayjs): number => {
+    const getValue = (location: string, d: dayjs.Dayjs): number | undefined => {
+        const series = data[location];
+        if (!series) return undefined;
         const key = dateToKey(d);
         const entry = series[key].values;
         return entry[entry.length - 1];
     };
 
-    const registerSeries = (wdata?: Timeserie[]) => {
+    const registerSeries = (location: string, wdata?: Timeserie[]) => {
+        const series = data[location] || {};
 
-        cleanOldData();
+        cleanOldData(location);
 
         wdata?.forEach(weather => {
             const forecast = weather.data.next_1_hours || weather.data.next_6_hours || weather.data.next_12_hours;
@@ -138,16 +151,16 @@ export const PrecipitationTrendProvider = ({ children }: PropsWithChildren<{}>) 
                 series[seriesKey].values.push(rainMM);  // begynner med kun nedbør mm
             }
         });
+        data[location] = series;
 
-        computeTrends();
+        computeTrends(location);
     }
 
     const value = {
         registerSeries,
         getSeries,
         getValue,
-        getTrend,
-        series
+        getTrend
     }
 
     return (

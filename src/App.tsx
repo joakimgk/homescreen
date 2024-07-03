@@ -20,6 +20,7 @@ import { HolidayProvider } from './contexts/HolidayContext';
 import { theme } from './theme';
 import { AuthProvider, BasicCredentials } from './contexts/AuthContext';
 import { SensorPage } from './Pages/SensorPage';
+import { PrecipitationTrendProvider } from './contexts/PrecipitationTrendContext';
 
 // Feature detection and fallback for fetch
 if (!window.fetch) {
@@ -93,7 +94,6 @@ const Layout = styled.div`
 
 const Content = styled.div`
   display: flex;
-  width: 100%;
 `;
 
 const basePath = process.env.REACT_APP_BASE_URL || '';
@@ -106,18 +106,20 @@ const App = () => {
           <Layout>
             <Router base={basePath}>
               <HolidayProvider>
-                <HeaderContainer>
-                  <Longterm />
-                  <Sensors />
-                </HeaderContainer>
-                <Content>
+                <PrecipitationTrendProvider>
+                  <HeaderContainer>
+                    <Longterm />
+                    <Sensors />
+                  </HeaderContainer>
+                  <Content>
 
-                  <Route path="/" component={WeatherPage} />
-                  <Route path="/sensor/:clientid" component={SensorPage} />
-                  <Route path="/ukeplan" component={UkeplanPage} />
-                  <Route path="ukeplan" component={UkeplanPage} />
+                    <Route path="/" component={WeatherPage} />
+                    <Route path="/sensor/:clientid" component={SensorPage} />
+                    <Route path="/ukeplan" component={UkeplanPage} />
+                    <Route path="ukeplan" component={UkeplanPage} />
 
-                </Content>
+                  </Content>
+                </PrecipitationTrendProvider>
               </HolidayProvider>
             </Router>
           </Layout>

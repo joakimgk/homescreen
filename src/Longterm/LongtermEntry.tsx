@@ -39,7 +39,7 @@ const Temperature = styled.div`
 `;
 
 export const LongtermEntry = ({ longterm }: { longterm: Timeserie }) => {
-    const { data: weather } = useWeather(BERGEN);
+    const { data: weather } = useWeather(BERGEN.loc);
     const { isBirthday } = useHolidayContext();
 
     const summary = longterm.data.next_24_hours;
