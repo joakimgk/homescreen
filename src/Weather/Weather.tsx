@@ -5,7 +5,13 @@ import dayjs from "dayjs";
 import { useEffect } from "react";
 import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
 import { Icons } from "../Shared/Icons";
+import 'dayjs/locale/nb';  // Import Norwegian locale
+import localeData from 'dayjs/plugin/localeData';
+import { capitalizeFirstLetter } from "../utils/helpers";
 import { Location } from "./locations";
+
+dayjs.extend(localeData);
+dayjs.locale('nb');  // Set the locale to Norwegian
 
 const Container = styled.div<{ primary?: number }>`
     display: flex;
@@ -72,11 +78,11 @@ export const Weather = ({ location, isPrimary = false }: { location: Location, i
                 const u = <Wrapper key={new Date(w.time).valueOf()}>
                     {date.hour() < prev && (
                         <DateHeader>
-                            {date.format('dddd DD. MMMM')}
+                            {capitalizeFirstLetter(date.format('dddd D. MMMM'))}
                             <Icon>{isPrimary && <Icons date={date} />}</Icon>
                         </DateHeader>
                     )}
-                    <WeatherEntry weather={w} />
+                    <WeatherEntry location={location} weather={w} />
                 </Wrapper>;
 
                 prev = date.hour();

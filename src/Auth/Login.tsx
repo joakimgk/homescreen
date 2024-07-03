@@ -24,17 +24,18 @@ export const Login = () => {
     return (
         <form onSubmit={handleSubmit}>
             <input
-                type="text"
-                value={usernameInput}
-                onChange={(e) => setUsernameInput(e.target.value)}
-                placeholder="Username"
-            />
-            <input
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
                 placeholder="Password"
             />
+            <input
+                type="text"
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                placeholder="Username"
+            />
+
             <button type="submit">Login</button>
         </form>
     );
