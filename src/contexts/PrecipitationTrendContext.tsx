@@ -114,6 +114,7 @@ export const PrecipitationTrendProvider = ({ children }: PropsWithChildren<{}>) 
         const series = data[location];
         if (!series) return [];
         const key = dateToKey(d);
+        if (!series[key]) return [];
         return series[key].values;
     };
 
@@ -121,6 +122,7 @@ export const PrecipitationTrendProvider = ({ children }: PropsWithChildren<{}>) 
         const series = data[location];
         if (!series) return undefined;
         const key = dateToKey(d);
+        if (!series[key]) return undefined;
         const entry = series[key].values;
         return entry[entry.length - 1];
     };
