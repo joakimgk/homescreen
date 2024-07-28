@@ -63,7 +63,7 @@ export const Sensor = ({ data }: { data: Client }) => {
 
     const status = lastActivity ? getStatus(lastActivity[0]) : undefined;
 
-    const inactive = isInactive(lockSensor?.last_active) || isInactive(doorSensor?.last_active);
+    const inactive = isInactive(lockSensor?.last_active) && isInactive(doorSensor?.last_active);
 
     if (inactive) {
         return null;
