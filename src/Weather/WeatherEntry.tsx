@@ -67,14 +67,43 @@ const History = styled.div`
     padding: 0 1em;
 `;
 
-const RainIndicator = styled.div<{ precipitation_amount?: number }>`
+const RainIndicator = styled.div<{ color: string, amount?: number, border?: number }>`
     display: flex;
-    background-color: #007FFF;
-    width: ${props => (props.precipitation_amount ? props.precipitation_amount : 0) / 15.0 * 80.0}%;
-    height: 12px;
+    background-color: #${props => props.color};
+    width: ${props => (props.amount ? props.amount : 0) / 15.0 * 80.0}%;
+    ${props => props.border === 1 && css`
+        border-left: 1px solid lightblue;
+    `};
+    height: 16px;
 `;
 
-export const WeatherEntry = ({ location, weather }: { location: Location, weather: Timeserie }) => {
+const Wrapper = styled.div`
+    display: flex;
+    flex: 1;
+    padding-left: 1em;
+`;
+
+const RainBar = ({ prev, rain }: { prev: number, rain?: number, }) => {
+    if (rain == undefined) return null;
+    return (
+        <Wrapper>
+            {prev < rain ? (
+                <>
+                    <RainIndicator amount={prev} color="007FFF" />
+                    <RainIndicator amount={rain - prev} color="007FFF" border={1} />
+                </>
+            ) : (
+                <>
+                    <RainIndicator amount={rain} color="007FFF" />
+                    <RainIndicator amount={prev - rain} color="AAFFFF" />
+                </>
+            )}
+        </Wrapper>
+    )
+}
+
+
+export const WeatherEntry = ({ location, weather, isPrimary }: { location: Location, weather: Timeserie, isPrimary?: boolean }) => {
     const forecast = weather.data.next_1_hours || weather.data.next_6_hours || weather.data.next_12_hours;
     const { getTrend, getSeries } = usePrecipitationTrendContext();
 
@@ -93,6 +122,18 @@ export const WeatherEntry = ({ location, weather }: { location: Location, weathe
     const trend = getTrend(location.key, date);
     const series = getSeries(location.key, date);
 
+    const show = rainMM > 0 || series?.some(x => x > 0);  // will rain, or has been said to rain
+
+    const uniqueData = series.filter((value, index) => {
+        // Keep the first occurrence of each value by checking if it appears for the first time at the current index
+        return series.indexOf(value) === index;
+    });
+    const prevValue = uniqueData.length > 1 ? uniqueData[uniqueData.length - 2] : undefined;
+
+    const toArrow = (val: number) => {
+        return val > 0 ? '↗' : '↘';
+    };
+
     return (
         <Container>
             <Time>
@@ -103,10 +144,13 @@ export const WeatherEntry = ({ location, weather }: { location: Location, weathe
             </Icon>
             <Temperature>{Math.round(weather.data.instant.details.air_temperature)}&deg;</Temperature>
             <Precipitation>
-                {!!rainMM && rainMM > 0 && (
+                {show && (
                     <>{`${padD(rainMM)} mm`}
-                        <History>t: {trend} (d: {series ? series.length : '-'})</History>
-                        <RainIndicator precipitation_amount={rainMM} />
+                        <RainBar rain={rainMM} prev={prevValue ?? 0} />
+
+                        {/* <History>t: {trend} (d: {series ? series.length : '-'})</History> */}
+                        {trend != 0 && trend != undefined && toArrow(trend)}
+                        {/* <History>({prevValue ?? 0} mm)</History> */}
                     </>
                 )}
             </Precipitation>
