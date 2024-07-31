@@ -4,6 +4,12 @@ export interface Location {
     key: string;
 }
 
+export const LEVANGER: Location = {
+    loc: 'lat=63.7464&lon=11.3005&altitude=5',
+    name: 'Levanger',
+    key: 'LVA'
+};
+
 export const BERGEN: Location = {
     loc: 'lat=60.39323&lon=5.3245&altitude=5',
     name: 'Bergen',

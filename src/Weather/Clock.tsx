@@ -4,10 +4,6 @@ import styled from "styled-components";
 
 const Container = styled.div`
     display: flex;
-    align-items: flex-start;
-
-    font-weight: 600;
-    font-size: 1.1em;
 `;
 
 export const Clock = () => {

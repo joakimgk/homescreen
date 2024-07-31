@@ -82,7 +82,7 @@ export const Weather = ({ location, isPrimary = false }: { location: Location, i
                             <Icon>{isPrimary && <Icons date={date} />}</Icon>
                         </DateHeader>
                     )}
-                    <WeatherEntry location={location} weather={w} />
+                    <WeatherEntry location={location} weather={w} isPrimary={isPrimary} />
                 </Wrapper>;
 
                 prev = date.hour();

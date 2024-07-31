@@ -1,28 +1,29 @@
 import dayjs from "dayjs";
 import { ModifierKeyz, icons, modifiers } from "../services/icons";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Timeserie, Next1_HoursDetails } from "../services/weather";
 import { pad, padD } from "../utils/helpers";
 import { usePrecipitationTrendContext } from "../contexts/PrecipitationTrendContext";
 import { Clock } from "./Clock";
 import { Location } from "./locations";
 
-const Container = styled.div`
+const Container = styled.div<{ showMinutes?: number }>`
     display: flex;
     justify-content: space-between; 
-    padding: 3px 1em;
-    font-size: 16px;
-
+    padding: 0 15px;
+    
     /* define base font size */
-    font-size: 1.6em;
+    font-size: ${props => props.showMinutes === 1 ? '1.8em' : '1em'};
+    font-weight: ${props => props.showMinutes === 1 ? '700' : '400'};
+
     @media only screen and (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-        font-size: 1.3em;
+        font-size: ${props => props.showMinutes === 1 ? '2em' : '1.3em'};
     }
 `;
 
 const Time = styled.div`
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     font-size: 70%;
     flex: 1;
 `;
@@ -59,6 +60,10 @@ const Precipitation = styled.div`
     align-items: center;
     font-size: 50%;
     flex: 1.6;
+
+    @media only screen and (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        flex: 2;
+    }
 `;
 
 const History = styled.div`
@@ -115,7 +120,7 @@ export const WeatherEntry = ({ location, weather, isPrimary }: { location: Locat
     if (key.length > 1) icon += modifiers[k];
 
     const date = dayjs(weather.time, 'YYYY-MM-DD', 'no');
-    const showMinutes = dayjs().format('DD HH') === date.format('DD HH');
+    const showMinutes = isPrimary && dayjs().format('DD HH') === date.format('DD HH');
 
     const rainMM = (forecast.details as Next1_HoursDetails).precipitation_amount;
 
@@ -135,7 +140,7 @@ export const WeatherEntry = ({ location, weather, isPrimary }: { location: Locat
     };
 
     return (
-        <Container>
+        <Container showMinutes={showMinutes ? 1 : 0}>
             <Time>
                 {showMinutes ? <Clock /> : <>{date.format('HH')}</>}
             </Time>

@@ -3,7 +3,7 @@ import { Weather } from "../Weather/Weather";
 import { Ukeplan } from "../Ukeplan/Ukeplan";
 import { Meldinger } from "../Meldinger/Meldinger";
 import { PrecipitationTrendProvider } from "../contexts/PrecipitationTrendContext";
-import { BERGEN, SANLORENZO } from "../Weather/locations";
+import { BERGEN, LEVANGER, SANLORENZO } from "../Weather/locations";
 
 const Content = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ export const WeatherPage = () => {
       </WeatherContainer>
       {summer ? (
         <WeatherContainer>
-          <Weather location={SANLORENZO} />
+          <Weather location={LEVANGER} />
         </WeatherContainer>
       ) : (
         <>
